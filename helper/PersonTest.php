@@ -11,7 +11,7 @@ $person = new Person("Dan", 37);
 
 
 $value = $person;
-$reference = & $person;
+$reference = &$person;
 
 
 //$assigned = 100;

@@ -1,9 +1,9 @@
 <?php
 
-class RequestUtils{
+trait RequestUtils{
 
 
-    public static function getRequestObj(
+    public function getRequestObj(
         $urlParams,
         $server,
         $request){

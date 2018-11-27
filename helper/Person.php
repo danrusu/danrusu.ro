@@ -1,8 +1,7 @@
 <?php
 
 
-class Person
-{
+class Person {
 
     private $name;
     private $age;
@@ -12,8 +11,7 @@ class Person
      * @param $name
      * @param $age
      */
-    public function __construct($name, $age)
-    {
+    public function __construct($name, $age) {
         $this->name = $name;
         $this->age = $age;
     }
@@ -21,16 +19,14 @@ class Person
     /**
      * @return mixed
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
     /**
      * @return mixed
      */
-    public function getAge()
-    {
+    public function getAge() {
         return $this->age;
     }
 

@@ -1,11 +1,9 @@
 <?php
 
 
-trait Operation
-{
+trait Operation {
 
-    private function calculate($n1, $n2, $operation)
-    {
+    private function calculate($n1, $n2, $operation) {
 
         switch ($operation) {
 
@@ -29,8 +27,7 @@ trait Operation
     }
 
 
-    public function getJsonResult($n1, $n2, $operation)
-    {
+    public function getJsonResult($n1, $n2, $operation) {
 
         $result = '{ "numbers": [ "' . $n1
 

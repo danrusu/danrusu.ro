@@ -13,9 +13,10 @@
     e. You can only override methods in a sub class.
 
     f. You can access private members directly in any subclass.
-
+    
    #### 15 POINTS
-
+   
+   ####
 
 2. What will the following code print?
 
@@ -39,7 +40,8 @@
     f. 3
 
    #### 10 points
-
+   
+   ####
 
 3. What will be printed to console after running the Test class?
 
@@ -77,7 +79,8 @@
     f. vehicle
 
    #### 10 points
-
+   
+   ####
 
 4. Which of the following methods can appear in an interface?
 
@@ -94,7 +97,9 @@
     f.   all above
 
    #### 10 points
-
+   
+   ####
+   
 5. Streams test: having the following classes:
 
     ```

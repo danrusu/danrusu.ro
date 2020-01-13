@@ -1,0 +1,29 @@
+{
+  "name": "Porsche",
+  "model": "718 Cayman",
+  "availableColors": [
+    "orange",
+    "red",
+    "yellow",
+    "black"
+  ],
+  "engine": {
+    "displacement": 2,
+    "max_power": "300 HP",
+    "isDiesel": false,
+    "type": "flat-four-cylinder",
+    "transmission": {
+      "speedCount": 6,
+      "isManual": true
+    }
+  },
+  "max-speed": {
+    "value": 170,
+    "unit": "mph"
+  },
+  "price": {
+    "value": 61000,
+    "currency": "$"
+  }
+}
+

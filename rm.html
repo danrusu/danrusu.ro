@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>RM</title>
+    <style>
+        html {
+            --auColor: red;
+            --roColor: #2196F3;
+            --itColor: #4CAF50;
+            --btnTextColor: white;
+        }
+
+
+        progress[value] {
+            width: 500px;
+            height: 30px;
+        }
+
+        table {
+            border-spacing: 1px;
+            border-collapse: separate;
+        }
+
+        span[class] {
+            font-size: 1.1em;
+            margin-left: 2px;
+        }
+
+        span.au {
+            color: var(--auColor);
+        }
+
+        span.ro {
+            color: var(--roColor);
+        }
+
+        span.in {
+            color: var(--itColor);
+        }
+
+        .val {
+            display: inline-block;
+            border: 2px solid var(--roColor);
+            color: var(--roColor);
+            font-size: 0.9em;
+        }
+
+        #au-val {
+            border: 2px solid var(--auColor);
+            color: var(--auColor);
+        }
+
+        #in-val {
+            border: 2px solid var(--itColor);
+            color: var(--itColor);
+        }
+
+        button {
+            width: 60px;
+            text-align: center;
+            transition-delay: 0.1s;
+            transition-property: color;
+        }
+
+        button,
+        span {
+            margin: 20px;
+            height: 30px;
+        }
+
+        td:last-of-type button {
+            margin-left: 0px;
+        }
+
+        #total {
+            width: 150px;
+            padding: 20px;
+            text-align: right;
+            font-size: 0.8 em;
+            font-weight: bold;
+        }
+
+        input {
+            width: 50px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .auBtn {
+            color: var(--btnTextColor);
+            border: 2px soid var(--auColor);
+            background-color: var(--auColor);
+        }
+
+        .roBtn {
+            color: var(--btnTextColor);
+            border: 2px soid var(--roColor);
+            background-color: var(--roColor);
+        }
+
+        .inBtn {
+            color: var(--btnTextColor);
+            border: 2px soid var(--itColor);
+            background-color: var(--itColor);
+        }
+
+        button:disabled,
+        button[disabled] {
+            border: 1px solid #999999;
+            background-color: #cccccc;
+            color: #666666;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Resource manager</h2>
+    <table>
+        <tr>
+            <th colspan="2">
+                <input id="total" type="number" placeholder="Total Resources [AU]" title="Total Resources [AU]""
+            onkeyup=" reset()" onchange="reset()" />
+            </th>
+            <th></th>
+            <th colspan="2">Move Resources</th>
+        </tr>
+        <tr>
+            <td><span class="au">Austria</span></td>
+            <td><input type="text" id="au-val" class="val" readonly /></td>
+            <td>
+                <progress id="au-progress" max="500" value="0"></progress>
+            </td>
+            <td><button id="auToRo" class="roBtn" title="Move to Romania">RO</button></td>
+            <td><button id="auToIn" class="inBtn" title="Move to India">IN</button></td>
+        </tr>
+        <tr>
+            <td><span class="ro">Romania</span></td>
+            <td><input type="text" id="ro-val" class="val" readonly /></td>
+            <td>
+                <progress id="ro-progress" max="500" value="0"></progress>
+            </td>
+            </td>
+            <td><button id="roToAu" class="auBtn" title="Move to Austria">AU</button></td>
+            <td><button id="roToIn" class="inBtn" title="Move to India">IN</button></td>
+        </tr>
+        <tr id='in'>
+            <td><span class="in">India</span></td>
+            <td><input type="text" id="in-val" class="val" readonly /></td>
+            <td>
+                <progress id="in-progress" max="500" value="0"></progress>
+            </td>
+            <td><button id="inToRo" class="roBtn" title="Move to Romania">RO</button></td>
+            <td><button id="inToAu" class="auBtn" title="Move to Austria">AU</button></td>
+        </tr>
+    </table>
+    <script>
+        const byId = id => document.getElementById(id);
+
+        const addActionForMovingResources = button => button.addEventListener('click', function () { move(this); });
+        document.querySelectorAll('button').forEach(addActionForMovingResources);
+
+        const getInputValue = inputId => () => parseInt(byId(inputId).value);
+        const [getAu, getRo, getIn] = ['au-val', 'ro-val', 'in-val'].map(getInputValue);
+
+        const updateCountry = countryPrefix => val => {
+            byId(`${countryPrefix}-val`).value = val;
+            const total = parseInt(byId('total').value);
+            const progress = total
+                ? val / 4 / total * 500
+                : 0;
+            const progressElement = byId(`${countryPrefix}-progress`);
+            progressElement.value = progress;
+            progressElement.title = `${progress / 5}%`;
+        }
+
+        const [updateAu, updateRo, updateIn] = ['au', 'ro', 'in'].map(updateCountry);
+
+        const reset = () => {
+            updateAu(byId('total').value);
+            updateRo(0);
+            updateIn(0);
+            updateButtonsState()
+        }
+
+        const enableButton = buttonId => byId(buttonId).disabled = false;
+        const disableButton = buttonId => byId(buttonId).disabled = true;
+
+        const updateButtonsState = () => {
+            //AU
+            if (getAu() > 0) {
+                enableButton('auToRo');
+                enableButton('auToIn');
+            }
+            else {
+                disableButton('auToRo');
+                disableButton('auToIn');
+            }
+            // RO
+            if (getRo() > 0) {
+                enableButton('roToIn');
+            }
+            else {
+                disableButton('roToIn');
+            }
+            if (Math.floor(getRo() / 2) > 0) {
+                enableButton('roToAu');
+            }
+            else {
+                disableButton('roToAu');
+            }
+            //IN        
+            if (Math.floor(getIn() / 2) > 0) {
+                enableButton('inToRo');
+            }
+            else {
+                disableButton('inToRo');
+            }
+            if (Math.floor(getIn() / 4) > 0) {
+                enableButton('inToAu');
+            }
+            else {
+                disableButton('inToAu');
+            }
+        }
+
+        function move(button) {
+            switch (button.id) {
+                // AU
+                case 'auToRo':
+                    updateAu(getAu() - 1);
+                    updateRo(getRo() + 2);
+                    break;
+                case 'auToIn':
+                    updateAu(getAu() - 1);
+                    updateIn(getIn() + 4);
+                    break;
+                // RO    
+                case 'roToAu':
+                    updateRo(getRo() - 2);
+                    updateAu(getAu() + 1);
+                    break;
+                case 'roToIn':
+                    updateRo(getRo() - 1);
+                    updateIn(getIn() + 2);
+                    break;
+                // IN
+                case 'inToAu':
+                    updateIn(getIn() - 4);
+                    updateAu(getAu() + 1);
+                    break;
+                case 'inToRo':
+                    updateIn(getIn() - 2);
+                    updateRo(getRo() + 1);
+                    break;
+            }
+            updateButtonsState();
+        }
+
+        const initPage = () => {
+            updateAu(0);
+            updateRo(0);
+            updateIn(0);
+            updateButtonsState();
+        };
+
+        initPage();
+    </script>
+</body>
+
+</html>
